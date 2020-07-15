@@ -1,0 +1,16 @@
+name: 'Check Pull Request Format Action'
+description: 'A GitHub action that ensures pull requests follow a specific format'
+author: 'Rahul Ravikumar'
+branding:
+  icon: 'alert-triangle'  
+  color: 'green'
+inputs:
+  checks:
+    description: 'The JSON Array of regular expressions to validate the pull request body with. All of these MUST be present.' 
+    required: true
+outputs:
+  status:
+    description: The result of the pull request checks. `true` if passed or `false` when failed. 
+runs:
+  using: 'node12'
+  main: 'dist/index.js'

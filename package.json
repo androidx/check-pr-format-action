@@ -1,0 +1,32 @@
+{
+  "name": "check-pr-format-action",
+  "version": "0.1.0",
+  "description": "A GitHub action that ensures that pull requests follow conventions.",
+  "author": "Rahul Ravikumar",
+  "license": "Apache-2.0",
+  "files": [
+    "src/**",
+    "app/**",
+    "built/**"
+  ],
+  "main": "built/index.js",
+  "types": "built/index.d.ts",
+  "scripts": {
+    "compile": "node_modules/.bin/tsc",
+    "format": "node_modules/.bin/clang-format -i -style=file --glob=src/**.ts",
+    "clean": "rm -rf built",
+    "watch": "node_modules/.bin/tsc --watch &",
+    "build": "node_modules/.bin/tsc && node_modules/.bin/parcel build src/index.ts --target node --bundle-node-modules --out-file dist/index.js --no-minify"
+  },
+  "devDependencies": {
+    "clang-format": "^1.4.0",
+    "parcel-bundler": "^1.12.4",
+    "typescript": "^3.9.5",
+    "watchify": "^3.11.1"
+  },
+  "dependencies": {
+    "@actions/core": "^1.2.4",
+    "@actions/github": "^4.0.0",
+    "@types/node": "^14.0.23"
+  }
+}
