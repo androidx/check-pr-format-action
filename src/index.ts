@@ -11,6 +11,7 @@ function checkPullRequestFormat(): void {
   const body = pullRequest?.body;
   if (!!body === false) {
     core.info(`No pull request body. `);
+    core.setFailed(`No pull request body.`);
     return;
   }
 

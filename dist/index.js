@@ -5804,6 +5804,7 @@ function checkPullRequestFormat() {
 
   if (!!body === false) {
     core.info("No pull request body. ");
+    core.setFailed("No pull request body.");
     return;
   }
 
