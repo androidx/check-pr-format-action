@@ -9,7 +9,8 @@ function checkPullRequestFormat(): void {
   core.info(`Workflow payload ${JSON.stringify(workFlowPaylod)}`);
 
   const body = pullRequest?.body;
-  if (!!body === false) {
+  // Checks are performed only when we have a pull request body.
+  if (!!pullRequest && !!body === false) {
     core.info(`No pull request body. `);
     core.setFailed(`No pull request body.`);
     return;

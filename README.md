@@ -12,5 +12,5 @@ Use a snippet like this to setup the Webhook step in your `YAML` file.
   with:
     # Enforces a `Test: <stanza>` in the pull request
     # This regular expressions are evaluated for every line in the pull request body.
-    checks: '["(.*)?Test\:(.*)?"]'
+    checks: '["(.*)?Test:(.*)?"]'
 ```

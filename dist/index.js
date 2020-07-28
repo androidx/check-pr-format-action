@@ -5800,9 +5800,9 @@ function checkPullRequestFormat() {
   var pullRequest = github.context.payload.pull_request; // Log the actual workflow payload for debugging
 
   core.info("Workflow payload " + JSON.stringify(workFlowPaylod));
-  var body = pullRequest === null || pullRequest === void 0 ? void 0 : pullRequest.body;
+  var body = pullRequest === null || pullRequest === void 0 ? void 0 : pullRequest.body; // Checks are performed only when we have a pull request body.
 
-  if (!!body === false) {
+  if (!!pullRequest && !!body === false) {
     core.info("No pull request body. ");
     core.setFailed("No pull request body.");
     return;
