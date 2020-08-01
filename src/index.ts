@@ -8,9 +8,13 @@ function checkPullRequestFormat(): void {
   // Log the actual workflow payload for debugging
   core.info(`Workflow payload ${JSON.stringify(workFlowPaylod)}`);
 
+  if (!!pullRequest == false) {
+    // Checks can only be performed when it is a pull request.
+    return;
+  }
+
   const body = pullRequest?.body;
-  // Checks are performed only when we have a pull request body.
-  if (pullRequest && !!body === false) {
+  if (!!body === false) {
     core.info(`No pull request body. `);
     core.setFailed(`No pull request body.`);
     return;
