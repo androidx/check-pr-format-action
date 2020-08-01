@@ -1415,11 +1415,15 @@ Object.defineProperty(exports, "__esModule", {
 exports.getUserAgent = getUserAgent;
 
 function getUserAgent() {
-  try {
+  if (typeof navigator === "object" && "userAgent" in navigator) {
     return navigator.userAgent;
-  } catch (e) {
-    return "<environment undetectable>";
   }
+
+  if (typeof process === "object" && "version" in process) {
+    return `Node.js/${process.version.substr(1)} (${process.platform}; ${process.arch})`;
+  }
+
+  return "<environment undetectable>";
 }
 },{}],"fERQ":[function(require,module,exports) {
 module.exports = register
@@ -1577,36 +1581,13 @@ module.exports.Hook = Hook
 module.exports.Singular = Hook.Singular
 module.exports.Collection = Hook.Collection
 
-},{"./lib/register":"fERQ","./lib/add":"nBNi","./lib/remove":"ZSlN"}],"SCrJ":[function(require,module,exports) {
+},{"./lib/register":"fERQ","./lib/add":"nBNi","./lib/remove":"ZSlN"}],"VKNN":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = isObject;
-
-/*!
- * isobject <https://github.com/jonschlinkert/isobject>
- *
- * Copyright (c) 2014-2017, Jon Schlinkert.
- * Released under the MIT License.
- */
-function isObject(val) {
-  return val != null && typeof val === 'object' && Array.isArray(val) === false;
-}
-
-;
-},{}],"WeHb":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = isPlainObject;
-
-var _isobject = _interopRequireDefault(require("isobject"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+exports.default = void 0;
 
 /*!
  * is-plain-object <https://github.com/jonschlinkert/is-plain-object>
@@ -1614,19 +1595,19 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  * Copyright (c) 2014-2017, Jon Schlinkert.
  * Released under the MIT License.
  */
-function isObjectObject(o) {
-  return (0, _isobject.default)(o) === true && Object.prototype.toString.call(o) === '[object Object]';
+function isObject(o) {
+  return Object.prototype.toString.call(o) === '[object Object]';
 }
 
 function isPlainObject(o) {
   var ctor, prot;
-  if (isObjectObject(o) === false) return false; // If has modified constructor
+  if (isObject(o) === false) return false; // If has modified constructor
 
   ctor = o.constructor;
-  if (typeof ctor !== 'function') return false; // If has modified prototype
+  if (ctor === undefined) return true; // If has modified prototype
 
   prot = ctor.prototype;
-  if (isObjectObject(prot) === false) return false; // If constructor does not have an Object-specific method
+  if (isObject(prot) === false) return false; // If constructor does not have an Object-specific method
 
   if (prot.hasOwnProperty('isPrototypeOf') === false) {
     return false;
@@ -1636,8 +1617,9 @@ function isPlainObject(o) {
   return true;
 }
 
-;
-},{"isobject":"SCrJ"}],"LxTi":[function(require,module,exports) {
+var _default = isPlainObject;
+exports.default = _default;
+},{}],"LxTi":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1999,7 +1981,7 @@ function withDefaults(oldDefaults, newDefaults) {
   });
 }
 
-const VERSION = "6.0.3";
+const VERSION = "6.0.5";
 const userAgent = `octokit-endpoint.js/${VERSION} ${(0, _universalUserAgent.getUserAgent)()}`; // DEFAULTS has all properties set that EndpointOptions has, except url.
 // So we use RequestParameters and add method as additional required property.
 
@@ -2017,48 +1999,7 @@ const DEFAULTS = {
 };
 const endpoint = withDefaults(null, DEFAULTS);
 exports.endpoint = endpoint;
-},{"is-plain-object":"WeHb","universal-user-agent":"aDk8"}],"oYHg":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = isPlainObject;
-
-var _isobject = _interopRequireDefault(require("isobject"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-/*!
- * is-plain-object <https://github.com/jonschlinkert/is-plain-object>
- *
- * Copyright (c) 2014-2017, Jon Schlinkert.
- * Released under the MIT License.
- */
-function isObjectObject(o) {
-  return (0, _isobject.default)(o) === true && Object.prototype.toString.call(o) === '[object Object]';
-}
-
-function isPlainObject(o) {
-  var ctor, prot;
-  if (isObjectObject(o) === false) return false; // If has modified constructor
-
-  ctor = o.constructor;
-  if (typeof ctor !== 'function') return false; // If has modified prototype
-
-  prot = ctor.prototype;
-  if (isObjectObject(prot) === false) return false; // If constructor does not have an Object-specific method
-
-  if (prot.hasOwnProperty('isPrototypeOf') === false) {
-    return false;
-  } // Most likely a plain Object
-
-
-  return true;
-}
-
-;
-},{"isobject":"SCrJ"}],"AsQL":[function(require,module,exports) {
+},{"is-plain-object":"VKNN","universal-user-agent":"aDk8"}],"AsQL":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -3968,7 +3909,7 @@ var _requestError = require("@octokit/request-error");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-const VERSION = "5.4.5";
+const VERSION = "5.4.7";
 
 function getBufferResponse(response) {
   return response.arrayBuffer();
@@ -4102,7 +4043,7 @@ const request = withDefaults(_endpoint.endpoint, {
   }
 });
 exports.request = request;
-},{"@octokit/endpoint":"LxTi","universal-user-agent":"aDk8","is-plain-object":"oYHg","node-fetch":"AsQL","@octokit/request-error":"oyDP"}],"vvQG":[function(require,module,exports) {
+},{"@octokit/endpoint":"LxTi","universal-user-agent":"aDk8","is-plain-object":"VKNN","node-fetch":"AsQL","@octokit/request-error":"oyDP"}],"vvQG":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4115,13 +4056,16 @@ var _request = require("@octokit/request");
 
 var _universalUserAgent = require("universal-user-agent");
 
-const VERSION = "4.5.1";
+const VERSION = "4.5.3";
 
 class GraphqlError extends Error {
   constructor(request, response) {
     const message = response.data.errors[0].message;
     super(message);
     Object.assign(this, response.data);
+    Object.assign(this, {
+      headers: response.headers
+    });
     this.name = "GraphqlError";
     this.request = request; // Maintains proper stack trace (only available on V8)
 
@@ -4155,7 +4099,14 @@ function graphql(request, query, options) {
   }, {});
   return request(requestOptions).then(response => {
     if (response.data.errors) {
+      const headers = {};
+
+      for (const key of Object.keys(response.headers)) {
+        headers[key] = response.headers[key];
+      }
+
       throw new GraphqlError(requestOptions, {
+        headers,
         data: response.data
       });
     }
@@ -4263,7 +4214,7 @@ var _graphql = require("@octokit/graphql");
 
 var _authToken = require("@octokit/auth-token");
 
-const VERSION = "3.1.0";
+const VERSION = "3.1.1";
 
 class Octokit {
   constructor(options = {}) {
@@ -4396,11 +4347,13 @@ const Endpoints = {
     createRegistrationTokenForRepo: ["POST /repos/{owner}/{repo}/actions/runners/registration-token"],
     createRemoveTokenForOrg: ["POST /orgs/{org}/actions/runners/remove-token"],
     createRemoveTokenForRepo: ["POST /repos/{owner}/{repo}/actions/runners/remove-token"],
+    createWorkflowDispatch: ["POST /repos/{owner}/{repo}/actions/workflows/{workflow_id}/dispatches"],
     deleteArtifact: ["DELETE /repos/{owner}/{repo}/actions/artifacts/{artifact_id}"],
     deleteOrgSecret: ["DELETE /orgs/{org}/actions/secrets/{secret_name}"],
     deleteRepoSecret: ["DELETE /repos/{owner}/{repo}/actions/secrets/{secret_name}"],
     deleteSelfHostedRunnerFromOrg: ["DELETE /orgs/{org}/actions/runners/{runner_id}"],
     deleteSelfHostedRunnerFromRepo: ["DELETE /repos/{owner}/{repo}/actions/runners/{runner_id}"],
+    deleteWorkflowRun: ["DELETE /repos/{owner}/{repo}/actions/runs/{run_id}"],
     deleteWorkflowRunLogs: ["DELETE /repos/{owner}/{repo}/actions/runs/{run_id}/logs"],
     downloadArtifact: ["GET /repos/{owner}/{repo}/actions/artifacts/{artifact_id}/{archive_format}"],
     downloadJobLogsForWorkflowRun: ["GET /repos/{owner}/{repo}/actions/jobs/{job_id}/logs"],
@@ -4559,6 +4512,14 @@ const Endpoints = {
     revokeInstallationAccessToken: ["DELETE /installation/token"],
     suspendInstallation: ["PUT /app/installations/{installation_id}/suspended"],
     unsuspendInstallation: ["DELETE /app/installations/{installation_id}/suspended"]
+  },
+  billing: {
+    getGithubActionsBillingOrg: ["GET /orgs/{org}/settings/billing/actions"],
+    getGithubActionsBillingUser: ["GET /users/{username}/settings/billing/actions"],
+    getGithubPackagesBillingOrg: ["GET /orgs/{org}/settings/billing/packages"],
+    getGithubPackagesBillingUser: ["GET /users/{username}/settings/billing/packages"],
+    getSharedStorageBillingOrg: ["GET /orgs/{org}/settings/billing/shared-storage"],
+    getSharedStorageBillingUser: ["GET /users/{username}/settings/billing/shared-storage"]
   },
   checks: {
     create: ["POST /repos/{owner}/{repo}/check-runs", {
@@ -4825,7 +4786,7 @@ const Endpoints = {
         previews: ["wyandotte"]
       }
     }],
-    listReposForUser: ["GET /user/{migration_id}/repositories", {
+    listReposForUser: ["GET /user/migrations/{migration_id}/repositories", {
       mediaType: {
         previews: ["wyandotte"]
       }
@@ -5112,6 +5073,13 @@ const Endpoints = {
         previews: ["squirrel-girl"]
       }
     }],
+    deleteLegacy: ["DELETE /reactions/{reaction_id}", {
+      mediaType: {
+        previews: ["squirrel-girl"]
+      }
+    }, {
+      deprecated: "octokit.reactions.deleteLegacy() is deprecated, see https://developer.github.com/v3/reactions/#delete-a-reaction-legacy"
+    }],
     listForCommitComment: ["GET /repos/{owner}/{repo}/comments/{comment_id}/reactions", {
       mediaType: {
         previews: ["squirrel-girl"]
@@ -5261,7 +5229,11 @@ const Endpoints = {
         previews: ["zzzax"]
       }
     }],
-    getCommunityProfileMetrics: ["GET /repos/{owner}/{repo}/community/profile"],
+    getCommunityProfileMetrics: ["GET /repos/{owner}/{repo}/community/profile", {
+      mediaType: {
+        previews: ["black-panther"]
+      }
+    }],
     getContent: ["GET /repos/{owner}/{repo}/contents/{path}"],
     getContributorsStats: ["GET /repos/{owner}/{repo}/stats/contributors"],
     getDeployKey: ["GET /repos/{owner}/{repo}/keys/{key_id}"],
@@ -5380,7 +5352,11 @@ const Endpoints = {
     issuesAndPullRequests: ["GET /search/issues"],
     labels: ["GET /search/labels"],
     repos: ["GET /search/repositories"],
-    topics: ["GET /search/topics"],
+    topics: ["GET /search/topics", {
+      mediaType: {
+        previews: ["mercy"]
+      }
+    }],
     users: ["GET /search/users"]
   },
   teams: {
@@ -5462,7 +5438,7 @@ const Endpoints = {
     updateAuthenticated: ["PATCH /user"]
   }
 };
-const VERSION = "4.0.0";
+const VERSION = "4.1.2";
 
 function endpointsToMethods(octokit, endpointsMap) {
   const newMethods = {};
@@ -5568,7 +5544,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.paginateRest = paginateRest;
-const VERSION = "2.2.3";
+const VERSION = "2.3.0";
 /**
  * Some “list” response that can be paginated have a different response structure
  *
@@ -5802,7 +5778,7 @@ function checkPullRequestFormat() {
   core.info("Workflow payload " + JSON.stringify(workFlowPaylod));
   var body = pullRequest === null || pullRequest === void 0 ? void 0 : pullRequest.body; // Checks are performed only when we have a pull request body.
 
-  if (!!pullRequest && !!body === false) {
+  if (pullRequest && !!body === false) {
     core.info("No pull request body. ");
     core.setFailed("No pull request body.");
     return;

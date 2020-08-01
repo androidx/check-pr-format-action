@@ -10,7 +10,7 @@ function checkPullRequestFormat(): void {
 
   const body = pullRequest?.body;
   // Checks are performed only when we have a pull request body.
-  if (!!pullRequest && !!body === false) {
+  if (pullRequest && !!body === false) {
     core.info(`No pull request body. `);
     core.setFailed(`No pull request body.`);
     return;

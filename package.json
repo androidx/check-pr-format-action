@@ -27,6 +27,7 @@
   "dependencies": {
     "@actions/core": "^1.2.4",
     "@actions/github": "^4.0.0",
-    "@types/node": "^14.0.23"
+    "@types/node": "^14.0.23",
+    "yarn": "^1.22.4"
   }
 }
