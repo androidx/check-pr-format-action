@@ -27,6 +27,7 @@ function checkPullRequestFormat(): void {
   } else {
     // Checks are a JSON array.
     let parsedChecks = JSON.parse(checks) as string[];
+    core.info(`Parsed checks ${parsedChecks.toString()}`);
     const result = _checkPullRequestFormat(parsedChecks, body!!);
     if (result) {
       core.info(`PR Format checks passed.`);
