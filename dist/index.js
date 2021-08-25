@@ -5798,6 +5798,7 @@ function checkPullRequestFormat() {
   } else {
     // Checks are a JSON array.
     var parsedChecks = JSON.parse(checks);
+    core.info("Parsed checks: [" + parsedChecks + "]");
 
     var result = _checkPullRequestFormat(parsedChecks, body);
 
