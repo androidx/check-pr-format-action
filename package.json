@@ -24,7 +24,7 @@
     }
   },
   "engines": {
-    "node": "14"
+    "node": "16"
   },
   "devDependencies": {
     "@parcel/transformer-typescript-types": "^2.7.0",
