@@ -1,9 +1,12 @@
-import core = require('@actions/core');
-import github = require('@actions/github');
+import * as core from '@actions/core';
+import * as github from '@actions/github';
 
 function checkPullRequestFormat(): void {
-  const workFlowPaylod = github.context.payload;  
+  const workFlowPaylod = github.context.payload;
   const pullRequest = github.context.payload.pull_request;
+    
+  // Log Full Context
+  core.info(`Workflow Context ${JSON.stringify(github.context)}`)
 
   // Log the actual workflow payload for debugging
   core.info(`Workflow payload ${JSON.stringify(workFlowPaylod)}`);
@@ -61,7 +64,7 @@ function _checkPullRequestFormat(expressions: string[], body: string): boolean {
       matches += 1;
     }
   }
-  return compiled.length === matches;
+  return compiled.length <= matches;
 }
 
 
