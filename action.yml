@@ -12,5 +12,5 @@ outputs:
   status:
     description: The result of the pull request checks. `true` if passed or `false` when failed. 
 runs:
-  using: 'node12'
+  using: 'node14'
   main: 'dist/index.js'

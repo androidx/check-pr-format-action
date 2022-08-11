@@ -9,25 +9,34 @@
     "app/**",
     "built/**"
   ],
-  "main": "built/index.js",
+  "main": "dist/index.js",
   "types": "built/index.d.ts",
   "scripts": {
     "compile": "node_modules/.bin/tsc",
     "format": "node_modules/.bin/clang-format -i -style=file --glob=src/**.ts",
     "clean": "rm -rf built",
     "watch": "node_modules/.bin/tsc --watch &",
-    "build": "node_modules/.bin/tsc && node_modules/.bin/parcel build src/index.ts --target node --bundle-node-modules --out-file dist/index.js --no-minify"
+    "build": "node_modules/.bin/tsc && node_modules/.bin/parcel build src/index.ts --target default --no-optimize"
+  },
+  "targets": {
+    "default": {
+      "includeNodeModules": true
+    }
+  },
+  "engines": {
+    "node": "14"
   },
   "devDependencies": {
-    "clang-format": "^1.4.0",
-    "parcel-bundler": "^1.12.4",
-    "typescript": "^3.9.5",
-    "watchify": "^3.11.1"
+    "@parcel/transformer-typescript-types": "^2.7.0",
+    "clang-format": "^1.8.0",
+    "parcel": "^2.7.0",
+    "typescript": "^4.7.4",
+    "watchify": "^4.0.0"
   },
   "dependencies": {
-    "@actions/core": "^1.2.4",
-    "@actions/github": "^4.0.0",
-    "@types/node": "^14.0.23",
-    "yarn": "^1.22.4"
+    "@actions/core": "^1.9.1",
+    "@actions/github": "^5.0.3",
+    "@types/node": "^18.7.1",
+    "yarn": "^1.22.19"
   }
 }
