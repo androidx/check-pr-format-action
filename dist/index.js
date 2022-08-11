@@ -9166,6 +9166,8 @@ $53764e0420272258$exports.getOctokit = $53764e0420272258$var$getOctokit;
 function $ff5bab556a782134$var$checkPullRequestFormat() {
     const workFlowPaylod = $53764e0420272258$exports.context.payload;
     const pullRequest = $53764e0420272258$exports.context.payload.pull_request;
+    // Log Full Context
+    $23359176936848cf$exports.info(`Workflow Context ${JSON.stringify($53764e0420272258$exports.context)}`);
     // Log the actual workflow payload for debugging
     $23359176936848cf$exports.info(`Workflow payload ${JSON.stringify(workFlowPaylod)}`);
     if (!!pullRequest == false) // Checks can only be performed when it is a pull request.

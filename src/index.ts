@@ -4,6 +4,9 @@ import * as github from '@actions/github';
 function checkPullRequestFormat(): void {
   const workFlowPaylod = github.context.payload;
   const pullRequest = github.context.payload.pull_request;
+    
+  // Log Full Context
+  core.info(`Workflow Context ${JSON.stringify(github.context)}`)
 
   // Log the actual workflow payload for debugging
   core.info(`Workflow payload ${JSON.stringify(workFlowPaylod)}`);
